@@ -1,5 +1,5 @@
 {
-	"name" : "DatingVIP/etcd-php",
+	"name" : "datingvip/etcd-php",
 	"description" : "Etcd client library for PHP",
 	"homepage" : "https://github.com/DatingVIP/etcd-php",
 	"keywords" : [
