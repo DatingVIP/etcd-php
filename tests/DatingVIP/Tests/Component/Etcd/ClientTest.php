@@ -16,13 +16,13 @@ class ClientTest extends TestCase
 
     private $dirname = '/phpunit_test';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = new Client('', '', $this->dirname);
         $this->client->setRoot($this->dirname);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->client->setRoot('/');
     }

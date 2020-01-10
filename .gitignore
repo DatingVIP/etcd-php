@@ -1,4 +1,5 @@
 bin/phpunit
+.phpunit.result.cache
 
 ### PHP CS FIXER ###
 .php_cs.cache
