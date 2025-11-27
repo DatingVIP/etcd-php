@@ -1,4 +1,5 @@
 <?php
+
 namespace DatingVIP\Component\Etcd\Http;
 
 use DatingVIP\Component\Etcd\HttpInterface;
@@ -14,13 +15,13 @@ class Curl implements HttpInterface
 
     private $custom_ca_file = '';
 
-    public function verifySslPeer(bool $flag = true, string $ca_file = '') : void
+    public function verifySslPeer(bool $flag = true, string $ca_file = ''): void
     {
         $this->verify_ssl_peer = $flag;
         $this->custom_ca_file = $ca_file;
     }
 
-    public function get(string $url, array $query_arguments = []) : array
+    public function get(string $url, array $query_arguments = []): array
     {
         if (!empty($query_arguments)) {
             $url .= '?' . http_build_query($query_arguments);
@@ -29,7 +30,7 @@ class Curl implements HttpInterface
         return $this->execute($this->curl($url), $url);
     }
 
-    public function post(string $url, array $payload = [], array $query_arguments = []) : array
+    public function post(string $url, array $payload = [], array $query_arguments = []): array
     {
         if (!empty($query_arguments)) {
             $url .= '?' . http_build_query($query_arguments);

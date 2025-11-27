@@ -56,7 +56,7 @@ class Client implements ClientInterface
         return $this->http;
     }
 
-    private function buildKeyUri(string $key) : string
+    private function buildKeyUri(string $key): string
     {
         if (strpos($key, '/') !== 0) {
             $key = '/' . $key;
@@ -64,7 +64,7 @@ class Client implements ClientInterface
 
         $root = $this->root;
         if (strlen($root) > 0 && strpos($root, '/') !== 0) {
-            $root = '/'.$root;
+            $root = '/' . $root;
         }
 
         $uri = '/' . $this->apiversion . '/keys' . $root . $key;
@@ -83,7 +83,7 @@ class Client implements ClientInterface
      *    // the new key is /datingvip/key1
      * </code>
      */
-    public function setRoot(string $root) : ClientInterface
+    public function setRoot(string $root): ClientInterface
     {
         if (strpos('/', $root) === false) {
             $root = '/' . $root;
@@ -93,7 +93,7 @@ class Client implements ClientInterface
         return $this;
     }
 
-    public function getNode(string $key, array $flags = null)
+    public function getNode(string $key, ?array $flags = null)
     {
         $query = [];
         if ($flags) {
@@ -115,7 +115,7 @@ class Client implements ClientInterface
         return $response['node'];
     }
 
-    public function keySet(string $key, string $value, int $ttl = null, array $condition = []) : bool
+    public function keySet(string $key, string $value, ?int $ttl = null, array $condition = []): bool
     {
         $data = ['value' => $value];
 
@@ -131,7 +131,7 @@ class Client implements ClientInterface
         return false;
     }
 
-    public function keyCreate(string $key, string $value, int $ttl = null, array $condition = []) : bool
+    public function keyCreate(string $key, string $value, ?int $ttl = null, array $condition = []): bool
     {
         $extra = ['prevExist' => 'false'];
 
@@ -142,7 +142,7 @@ class Client implements ClientInterface
         return $this->keySet($key, $value, $ttl, $extra);
     }
 
-    public function keyUpdate(string $key, string $value, int $ttl = null, array $condition = []) : bool
+    public function keyUpdate(string $key, string $value, ?int $ttl = null, array $condition = []): bool
     {
         $extra = ['prevExist' => 'true'];
 
@@ -153,19 +153,19 @@ class Client implements ClientInterface
         return $this->keySet($key, $value, $ttl, $extra);
     }
 
-    public function keyGet(string $key, array $flags = null) : string
+    public function keyGet(string $key, ?array $flags = null): string
     {
         $node = $this->getNode($key, $flags);
 
         return $node['value'] ?? '';
     }
 
-    public function keyRemove(string $key) : bool
+    public function keyRemove(string $key): bool
     {
         return (bool) $this->http()->delete($this->buildKeyUri($key));
     }
 
-    public function keyExists(string $key) : bool
+    public function keyExists(string $key): bool
     {
         $url = $this->buildKeyUri($key);
         $response = json_decode($this->curlExec($this->curl($url), $url), true);
@@ -177,7 +177,7 @@ class Client implements ClientInterface
         return false;
     }
 
-    public function dirCreate(string $key, int $ttl = 0) : bool
+    public function dirCreate(string $key, int $ttl = 0): bool
     {
         $data = ['dir' => 'true'];
 
@@ -188,7 +188,7 @@ class Client implements ClientInterface
         return (bool)$this->http()->put($this->buildKeyUri($key), $data, ['prevExist' => 'false']);
     }
 
-    public function dirUpdate(string $key, int $ttl = 0) : bool
+    public function dirUpdate(string $key, int $ttl = 0): bool
     {
         $data = ['dir' => 'true'];
 
@@ -199,7 +199,7 @@ class Client implements ClientInterface
         return (bool) $this->http()->put($this->buildKeyUri($key), $data, ['prevExist' => 'true']);
     }
 
-    public function dirRemove(string $key, bool $recursive = false) : bool
+    public function dirRemove(string $key, bool $recursive = false): bool
     {
         $query = ['dir' => 'true'];
 
@@ -210,7 +210,7 @@ class Client implements ClientInterface
         return (bool) $this->http()->delete($this->buildKeyUri($key), $query);
     }
 
-    public function dirExists(string $key) : bool
+    public function dirExists(string $key): bool
     {
         $url = $this->buildKeyUri($key);
         $response = json_decode($this->curlExec($this->curl($url), $url), true);
@@ -222,7 +222,7 @@ class Client implements ClientInterface
         return false;
     }
 
-    public function dirGet(string $key, bool $recursive = false) : array
+    public function dirGet(string $key, bool $recursive = false): array
     {
         $query = [];
         if ($recursive) {
@@ -232,7 +232,7 @@ class Client implements ClientInterface
         return $this->http()->get($this->buildKeyUri($key), $query);
     }
 
-    public function dirList(string $key, bool $recursive = false) : array
+    public function dirList(string $key, bool $recursive = false): array
     {
         try {
             $data = $this->dirGet($key, $recursive);
@@ -243,7 +243,7 @@ class Client implements ClientInterface
         return $this->traversalDir((new RecursiveArrayIterator($data)));
     }
 
-    private function traversalDir(RecursiveArrayIterator $iterator) : array
+    private function traversalDir(RecursiveArrayIterator $iterator): array
     {
         $key = '';
         while ($iterator->valid()) {
