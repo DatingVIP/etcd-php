@@ -19,17 +19,23 @@ jobs:
   tests:
     name: PHPUnit Tests
     runs-on: ubuntu-latest
+    container:
+      image: php:8.3-cli
+      options: --user root
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: curl
-          coverage: none
+      - name: Install system dependencies
+        run: |
+          apt-get update
+          apt-get install -y git unzip libcurl4-openssl-dev
+          docker-php-ext-install curl
+
+      - name: Install Composer
+        run: |
+          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
