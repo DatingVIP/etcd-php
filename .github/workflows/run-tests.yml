@@ -5,14 +5,19 @@ on:
     paths:
       - '**.php'
       - '.github/workflows/**'
-      - 'composer.json'
-      - 'phpunit.xml.dist'
+      - 'phpstan.neon'
+      - 'composer.*'
+      - 'docker-compose.ci.yml'
+      - 'codeception-legacy.yml'
   push:
     branches:
       - develop
       - master
     paths:
       - '**.php'
+      - '.github/workflows/**'
+      - 'phpstan.neon'
+      - 'composer.*'
   workflow_dispatch:
 
 jobs:
