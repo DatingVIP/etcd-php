@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace DatingVIP\Tests\Component\Etcd;
 
 use DatingVIP\Component\Etcd\Client;
-use PHPUnit\Framework\TestCase;
 use DatingVIP\Component\Etcd\Exception\EtcdException;
+use DatingVIP\Component\Etcd\Http\Curl;
+use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase
 {
-    /**
-     * @var Client
-     */
-    protected $client;
+    protected Client $client;
 
-    private $dirname = '/phpunit_test';
+    private string $dirname = '/phpunit_test';
 
     protected function setUp(): void
     {
@@ -30,12 +28,12 @@ class ClientTest extends TestCase
 
     public function testKeySet()
     {
-        $http = $this->createMock('\DatingVIP\Component\Etcd\Http\Curl');
+        $http = $this->createStub(Curl::class);
         $http->method('put')->willReturn(null);
         $this->client->setHttpClient($http);
         $this->assertFalse($this->client->keySet('', ''));
 
-        $http = $this->createMock('\DatingVIP\Component\Etcd\Http\Curl');
+        $http = $this->createStub(Curl::class);
         $http->method('put')->willReturn(['node' => ['value' => 'AA']]);
         $this->client->setHttpClient($http);
         $this->assertFalse($this->client->keySet('somekey', 'BB'));
@@ -45,7 +43,7 @@ class ClientTest extends TestCase
 
     public function testKeyGet()
     {
-        $http = $this->createMock('\DatingVIP\Component\Etcd\Http\Curl');
+        $http = $this->createStub(Curl::class);
         $http->method('put')->willReturn(null);
         $this->client->setHttpClient($http);
 
@@ -55,7 +53,7 @@ class ClientTest extends TestCase
             $this->assertSame('Node has not been found.', $e->getMessage());
         }
 
-        $http = $this->createMock('\DatingVIP\Component\Etcd\Http\Curl');
+        $http = $this->createStub(Curl::class);
         $http->method('get')->willReturn([
             'action' => 'get',
             'node' => [
